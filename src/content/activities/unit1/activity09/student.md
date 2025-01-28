@@ -37,4 +37,4 @@ function draw() {
   }
 }
 ```
-!image(../../../assets/actividad9.png)
+![Texto alternativo](../../../../assets/actividad9.png)
