@@ -34,12 +34,27 @@ Dos usuarios se conectan y compiten en un reto de dibujo en tiempo real. Uno es 
 #### **Código**
 **server.js**
 ``` js
-const express = require("express");
+const express = require('express');
+const http = require('http');
+const socketIO = require('socket.io');
+const path = require('path');
 const app = express();
-const server = require("http").Server(app);
-const io = require("socket.io")(server);
+const server = http.createServer(app); 
+const io = socketIO(server); 
+const port = 3000;
 
-app.use(express.static("public"));
+let page1 = { x: 0, y: 0, width: 100, height: 100 };
+let page2 = { x: 0, y: 0, width: 100, height: 100 };
+
+app.use(express.static(path.join(__dirname, 'views')));
+
+app.get('/page1', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'page1.html'));
+});
+
+app.get('/page2', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'page2.html'));
+});
 
 io.on("connection", socket => {
   console.log("Cliente conectado");
@@ -57,8 +72,8 @@ io.on("connection", socket => {
   });
 });
 
-server.listen(3000, () => {
-  console.log("Servidor corriendo en puerto 3000");
+server.listen(port, () => {
+    console.log(`Server is listening on http://localhost:${port}`);
 });
 ```
 **public/page1.js (Retoador)**
